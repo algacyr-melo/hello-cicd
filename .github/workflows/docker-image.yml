@@ -18,4 +18,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: almelo/hello-cicd:latest
+          tags: almelo/hello-cicd:dev-latest
