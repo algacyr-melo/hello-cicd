@@ -18,4 +18,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: hello-cicd:$(date +%s)
+          tags: hello-cicd:${{ github.sha }}
