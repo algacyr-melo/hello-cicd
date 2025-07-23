@@ -21,6 +21,7 @@ jobs:
           tags: almelo/hello-cicd:${{ github.sha }}
 
   update-manifest:
+    needs: docker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout manifest repo
