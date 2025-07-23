@@ -4,5 +4,5 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Ola, Mundo! Forcando rebuild da imagem pra testar o workflow"}
 
