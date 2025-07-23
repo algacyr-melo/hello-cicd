@@ -19,3 +19,47 @@ jobs:
         with:
           push: true
           tags: almelo/hello-cicd:${{ github.sha }}
+
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout manifest repo
+        uses: actions/checkout@v4
+        with:
+          repository: algacyr-melo/hello-cicd-manifests
+          token: ${{ secrets.MANIFEST_REPO_PAT }}
+          ref: main
+
+      - name: Get old image name
+        id: oldimage
+        run: |
+          old_image=$(grep 'image:' k8s/hello-cicd.yaml | awk '{print $2}')
+          echo "old_image=$old_image" >> $GITHUB_OUTPUT
+
+      - name: Set new image name
+        id: newimage
+        run: |
+          new_image="almelo/hello-cicd:${{ github.sha }}"
+          echo "new_image=$new_image" >> $GITHUB_OUTPUT
+
+      - name: Update manifest file
+        run: |
+          sed -i "s|${{ steps.oldimage.outputs.old_image }}|${{ steps.newimage.outputs.new_image }}|g" k8s/hello-cicd.yaml
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b update-image-name-${{ github.sha }}
+          git add k8s/hello-cicd.yaml
+          git commit -m "Update image name to ${{ steps.newimage.outputs.new_image }}"
+          git push origin update-image-name
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.MANIFEST_REPO_PAT }}
+          title: Update image name in manifest
+          body: This PR updates the image name to new-image-name.
+          base: main
+          head: update-image-name
