@@ -33,7 +33,7 @@ jobs:
       - name: Get old image name
         id: oldimage
         run: |
-          old_image=$(grep 'image:' k8s/hello-cicd.yaml | awk '{print $2}')
+          old_image=$(grep 'image:' k8s/deployment.yaml | awk '{print $2}')
           echo "old_image=$old_image" >> $GITHUB_OUTPUT
 
       - name: Set new image name
@@ -44,14 +44,14 @@ jobs:
 
       - name: Update manifest file
         run: |
-          sed -i "s|${{ steps.oldimage.outputs.old_image }}|${{ steps.newimage.outputs.new_image }}|g" k8s/hello-cicd.yaml
+          sed -i "s|${{ steps.oldimage.outputs.old_image }}|${{ steps.newimage.outputs.new_image }}|g" k8s/deployment.yaml
 
       - name: Commit changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout -b update-image-name-${{ github.sha }}
-          git add k8s/hello-cicd.yaml
+          git add k8s/deployment.yaml
           git commit -m "Update image name to ${{ steps.newimage.outputs.new_image }}"
           git push origin update-image-name-${{ github.sha }}
 
@@ -60,6 +60,6 @@ jobs:
         with:
           token: ${{ secrets.MANIFEST_REPO_PAT }}
           title: Update image name in manifest
-          body: This PR updates the image name to new-image-name.
+          body: This PR updates the image name to ${{ steps.newimage.outputs.new_image }}.
           base: main
           head: update-image-name
