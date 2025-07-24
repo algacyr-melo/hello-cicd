@@ -19,7 +19,7 @@ Aplicação simples em **FastAPI**, utilizada como base para projeto de **CI/CD*
 
 2. Aplique todos os manifestos:
     ```bash
-    kubect apply -f k8s/
+    kubectl apply -f k8s/
     ```
 
 ### Método 2: Usando URLs remotas (sem clonar)
