@@ -44,7 +44,7 @@ https://raw.githubusercontent.com/algacyr-melo/hello-cicd-manifests/refs/heads/m
 
     - **Dependendo do seu setup, pode ser necessário o uso do port-forward**
         ```bash
-        kubectl port-forward svc/hello-cicd 8080:8000
+        kubectl port-forward svc/hello-cicd 8080
         ```
 
 ## Entregas do Projeto
