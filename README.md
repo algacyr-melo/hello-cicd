@@ -39,10 +39,10 @@ https://raw.githubusercontent.com/algacyr-melo/hello-cicd-manifests/refs/heads/m
     ```
 
 2. Acesse a aplicação em: [http://localhost:8080](http://localhost:8080)
+    
+    - *O **Rancher Desktop** vai expor automaticamente o Service (LoadBalancer) via localhost.*
 
-   - *O **Rancher Desktop** vai expor automaticamente o Service (LoadBalancer) via localhost.*
-
-    - **Dependendo do seu setup, pode ser necessário o uso do port-forward**
+    - **Em ambientes onde isso não é feito automaticamente, você pode utilizar o port-forward.**
         ```bash
         kubectl port-forward svc/hello-cicd 8080
         ```
